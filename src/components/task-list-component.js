@@ -1,26 +1,24 @@
+import { StatusLabel } from "../const.js";
 import { createElement } from "../render.js";
+import { AbstractComponent } from "./AbstractComponent.js";
 
-function createListComponent() {
+function createListComponent(status) {
     return(
         `<div id="listCon">
-            <h2 class="taskHeader headerBackLog">Название блока</h2>
+            <h2 class="taskHeader header${status}">${StatusLabel[status]}</h2>
         </div>`
     );
 }
 
-export class ListComponent {
+export class ListComponent extends AbstractComponent{
+    #status = null;
+    
+    constructor({status}){
+        super();
+        this.#status = status;
+    }
+    
     getTemplate() {
-        return createListComponent();
-    }
-    getElement() {
-        if (!this.element) {
-        this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-    }
-
-    removeElement() {
-        this.element = null;
+        return createListComponent(this.#status);
     }
 }

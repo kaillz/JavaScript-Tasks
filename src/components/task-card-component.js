@@ -1,25 +1,27 @@
 import { createElement } from "../render.js";
+import { AbstractComponent } from "./AbstractComponent.js";
 
-function createCardComponent() {
+function createCardComponent(status, title) {
     return(
-        `<p class="taskCard cardBackLog">Название первой задачи</p>
+        `<p class="taskCard card${status}">${title}</p>
         `
     );
 }
 
-export class CardComponent {
+export class CardComponent extends AbstractComponent{
+    #id = null;
+    #status = null;
+    #title = null;
+
+    constructor({id, title, status}){
+        super();
+        this.#id = id;
+        this.#status = status;
+        this.#title = title;
+    }
+      
+
     getTemplate() {
-        return createCardComponent();
-    }
-    getElement() {
-        if (!this.element) {
-        this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-    }
-
-    removeElement() {
-        this.element = null;
+        return createCardComponent(this.#status, this.#title);
     }
 }

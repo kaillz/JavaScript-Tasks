@@ -7,30 +7,27 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 15px;
-    padding: 0 10px;
+    padding: 0 20px;
+    width: max-content;
 }
-.headerBackLog{
+.headerbacklog{
     background: #e3e3e3;
     color: #8f837d;
-    width: 100px;
     font-size: 24px;
 }
-.headerInProccess{
+.headerinProcess{
     background: #d6e7ff;
     color: #3e8def;
-    width: 150px;
     font-size: 24px;
 }
-.headerDone{
+.headerdone{
     background: #d7f9e0;
     color: #6fe049;
-    width: 100px;
     font-size: 24px;
 }
-.headerBin{
+.headerbin{
     background: #fbe3e3;
     color: #d5837b;
-    width: 125px;
     font-size: 24px;
 }
 
