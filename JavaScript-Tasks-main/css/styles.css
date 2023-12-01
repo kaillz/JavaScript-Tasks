@@ -1,0 +1,6 @@
+@import "normalize.css";
+@import "./index.css";
+@import "./tasksAdd.css";
+@import "./clearBtn.css";
+@import "./taskCon.css";
+@import "./taskCard.css";
