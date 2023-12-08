@@ -24,3 +24,8 @@
 .cardbin{
     box-shadow: -5px 0px 0px 0px #fbe3e3;
 }
+.cardStub{
+    background: none;
+    color: rgba(0, 0, 0, 0.5);
+    border: gray 1px solid;
+}

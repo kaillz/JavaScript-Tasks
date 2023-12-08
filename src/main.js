@@ -7,32 +7,49 @@ import { CardComponent } from './components/task-card-component.js';
 import { TasksService } from './service/TaskService.js';
 import { Status } from './const.js';
 import { ClearBtn } from './components/clear-btn-component.js';
+import { StubComponent } from './components/stub-card-component.js';
 
 
 const bodyContainer = document.getElementById('bodyApp');
 const addTaskContainer = document.querySelector('.addTaskCon');
 const tasksContainer = document.querySelector('.addTaskCon');
 const taskService = new TasksService();
-// const Status = new Status;
 
-let result = Object.keys(Status).map((key) => [key, Status[key]]);
-// const boardTasks = [...taskService.getBoardTasks()];
+const statuses = Object.values(Status);
 
 render(new HeaderComponent(), bodyContainer, RenderPosition.BEFOREBEGIN);
-render(new FormAddTaskComponent(), addTaskContainer);
+render(new FormAddTaskComponent(taskService), addTaskContainer);
 render(new TasksConComponent(), tasksContainer, RenderPosition.AFTEREND);
 
-let i = 0;
+function renderCard(task, container) {
+    const cardComponent = new CardComponent({id: task.id, title: task.title, status: task.status});
+    render(cardComponent, container);
+}
+
+function renderList(listContainer, status) {
+    const listComponent = new ListComponent(status, taskService);
+    render(listComponent, listContainer);
+    return listComponent;
+}
+
+
 const listContainer = document.querySelector('.taskCon');
-while(i<4){
-    const listComponent = new ListComponent({status: result[i][1]});
-    render(listComponent, listContainer, RenderPosition.BEFOREEND);
-    let tasks = taskService.getTasksByStatus(result[i][1]);
-    tasks.forEach(task => {
-        render(new CardComponent({id: task.id, title: task.title, status: task.status}), listComponent.getElement());
-    });
-    if(i == 3){
-        render(new ClearBtn(), listComponent.getElement(), RenderPosition.BEFOREEND);
+
+let disabledBtn=false;
+if (taskService.getTasks().length < 1)
+    disabledBtn = true;
+
+for(const status of statuses){
+     const listComponent = renderList(listContainer, status);
+     const tasks = taskService.getTasksByStatus(status);
+
+     if(tasks.length < 1){
+        render(new StubComponent(), listComponent.getElement());
     }
-    i++;
+     tasks.forEach(task => {
+        renderCard(task, listComponent.getElement());
+     });
+     if (status === Status.BASKET) {
+        render(new ClearBtn(taskService,disabledBtn), listComponent.getElement());
+     }
 }
