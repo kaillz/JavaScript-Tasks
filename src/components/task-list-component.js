@@ -24,21 +24,23 @@ export class ListComponent extends AbstractComponent{
         this.#taskService = taskService;
         this.#tasks = taskService.getTasksByStatus(status);
         window.addEventListener("create-task", ()=> this.#reRenderTasks(this.#status, this.#taskService));
+        window.addEventListener("removeBasket", ()=> this.#reRenderTasks(this.#status,  this.#taskService));
     }
 
     #reRenderTasks(status, taskService){
         this.#tasks = this.#taskService.getTasksByStatus(this.#status);
         this.#removeTasks();
         let disabledBtn=false;
-        if (this.#taskService.getTasks().length < 1)
-            disabledBtn = true;
-        if(this.#tasks.length < 1){
-            render(new StubComponent(), this.getElement());
+        if ( this.#tasks.length < 1){
+            render(new StubComponent(),this.getElement());
         }
         this.#tasks.forEach(task => {
             const taskComponent = new CardComponent({ id: task.id, title: task.title, status: task.status });
             render(taskComponent, this.getElement());
         });
+        if (this.#status == Status.BASKET && this.#tasks.length < 1){
+            disabledBtn = true;
+        }
         if (status === Status.BASKET) {
             render(new ClearBtn(taskService, disabledBtn), this.getElement());
         }
